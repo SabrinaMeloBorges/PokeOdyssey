@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <title>Pokédex</title>
+    </head>
+
+    <body>
+        <header>
+            <nav>
+                <a routerLink="/pokedex" class="logo">
+                    <img src="assets/pokebolaVermelha.png" alt="Logo" class="pokeball">
+                    Pokédex
+                </a>
+                <div class="mobile-menu" (click)="toggleMenu()" [class.active]="menuActive">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+                <ul class="nav-list" [class.active]="menuActive">
+                    <li *ngFor="let link of links; let i = index" [style.animation]="getLinkAnimation(i)">
+                        <a [routerLink]="link.path">{{link.name}}</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div class="pokedex-container">
+                <div class="pokemon-grid">
+                  <div *ngFor="let pokemon of pokemons; trackBy: trackById" class="pokemon-card">
+                    <span class="pokemon-number">#{{ pokemon.id.toString().padStart(3, '0') }}</span>
+                    <img [src]="pokemon.image" [alt]="pokemon.name" class="pokemon-image">
+                    <h3>{{ pokemon.name | titlecase }}</h3>
+                    <div class="types-container">
+                      <span *ngFor="let type of pokemon.types" 
+                            class="type-badge" 
+                            [class]="'type-' + type.toLowerCase()">
+                        {{ type | titlecase }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div *ngIf="loading" class="loading-spinner">
+                  <div class="spinner"></div>
+                  Carregando mais Pokémon...
+                </div>
+                
+                <div *ngIf="offset >= maxPokemon" class="end-message">
+                  Você alcançou todos os 150 Pokémon!
+                </div>
+              </div>
+        </main>
+
+        <script src="components/menu/mobile-navbar.js"></script>
+    </body>
+</html>

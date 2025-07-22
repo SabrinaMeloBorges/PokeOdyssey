@@ -1,0 +1,327 @@
+* { 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  color: #F1B2AC;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+.logo {
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
+  background: #7D78A3;
+  height: 8vh;
+  padding: 10 20px; 
+  position: relative; 
+}
+
+main {
+  background: url("src/assets/gengar.jpg") no-repeat center center;
+  background-size: cover;
+  height: 100vh;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  position: fixed;
+  top: 8vh;
+  right: 0;
+  width: 35%;
+  height: 0vh;
+  background: #7D78A3;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: height 0.3s ease-in;
+  z-index: 100;
+}
+
+.nav-list li {
+  letter-spacing: 3px;
+  margin: 35px 0;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+.mobile-menu {
+  display: block;
+  cursor: pointer;
+  z-index: 101;
+}
+
+.mobile-menu div {
+  width: 32px;
+  height: 2px;
+  background: #F1B2AC;
+  margin: 8px;
+  transition: 0.3s;
+}
+
+.nav-list.active {
+  display: flex;
+  height: 92vh;
+  transform: translateX(0);
+}
+
+.nav-list.active li {
+  opacity: 1;
+}
+
+@media (min-width: 999px) {
+  .nav-list {
+      display: flex;
+      position: static;
+      width: auto;
+      height: auto;
+      flex-direction: row;
+      background: transparent;
+  }
+
+  .nav-list li {
+      opacity: 1;
+      margin: 0 0 0 32px;
+  }
+
+  .mobile-menu {
+      display: none;
+  }
+}
+
+@keyframes navLinkFade {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.mobile-menu.active .line1 {
+  transform: rotate(-45deg) translate(-8px, 8px);
+}
+
+.mobile-menu.active .line2 {
+  opacity: 0;
+}
+
+.mobile-menu.active .line3 {
+  transform: rotate(45deg) translate(-5px, -7px);
+}
+
+.pokebola {
+  width: 22px;
+  height: 22px;
+}
+
+.music-button {
+  background: none;
+  border: none;
+  font-size: 32px; 
+  color: #4a294a; 
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.music-button:hover {
+  transform: scale(1.1);
+}
+
+.pokemon-center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 8vh); 
+  padding: 20px;
+  text-align: center;
+}
+
+.pokemon-card-center {
+  border: 2px solid #aaaaaac6;
+  border-radius: 16px;
+  padding: 24px;
+  background-color: rgba(255, 255, 255, 0.427);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  width: 320px;
+  animation: fadeIn 0.5s ease-in;
+  backdrop-filter: blur(5px);
+  position: relative;
+}
+
+.pokemon-card-center img {
+  width: 140px;
+  margin-bottom: 12px;
+}
+
+.pokemon-card-center h3 {
+  margin-bottom: 6px;
+  font-size: 24px;
+  color: #4a294a;
+}
+
+.pokemon-card-center p {
+  margin: 4px 0;
+  font-size: 16px;
+}
+
+.pokemon-card-center button {
+  background-color: #6f42c1;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.pokemon-card-center button:hover {
+  background-color: #5e35b1;
+}
+
+.pokebola-animacao.sacudindo {
+  width: 50px;
+  height: 50px;
+  margin-top: 16px;
+  animation: sacudir 0.5s infinite;
+  object-fit: contain;
+}
+
+@keyframes sacudir {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  50% { transform: rotate(-15deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.sparks {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin: 16px auto;
+}
+
+.spark {
+  width: 8px;
+  height: 8px;
+  background-color: yellow;
+  position: absolute;
+  border-radius: 50%;
+  animation: explodir 0.5s ease-out forwards;
+}
+
+.spark:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%) rotate(0deg); }
+.spark:nth-child(2) { top: 14px; left: 85%; transform: rotate(60deg); }
+.spark:nth-child(3) { bottom: 0; left: 50%; transform: translateX(-50%) rotate(120deg); }
+.spark:nth-child(4) { bottom: 14px; left: 15%; transform: rotate(180deg); }
+.spark:nth-child(5) { top: 14px; left: 15%; transform: rotate(240deg); }
+.spark:nth-child(6) { top: 0; left: 85%; transform: rotate(300deg); }
+
+@keyframes explodir {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.tipos-container {
+  margin-top: 8px;
+}
+
+.tipo {
+  display: inline-block;
+  padding: 4px 8px;
+  margin-right: 5px;
+  border-radius: 12px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.fire { background-color: #F08030; }
+.water { background-color: #6890F0; }
+.grass { background-color: #78C850; }
+.electric { background-color: #F8D030; }
+.bug { background-color: #A8B820; }
+.normal { background-color: #A8A878; }
+.poison { background-color: #A040A0; }
+.ground { background-color: #E0C068; }
+.fairy { background-color: #EE99AC; }
+.fighting { background-color: #C03028; }
+.psychic { background-color: #F85888; }
+.rock { background-color: #B8A038; }
+.ghost { background-color: #705898; }
+.ice { background-color: #98D8D8; }
+.dragon { background-color: #7038F8; }
+.steel { background-color: #B8B8D0; }
+.dark { background-color: #705848; }
+.flying { background-color: #A890F0; }
+
+.explosao {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #fff 0%, #ffcb05 40%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: explodir 0.6s ease-out;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes explodir {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+}
+
+.mensagem-captura {
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  animation: aparecerMensagem 0.4s ease-in-out;
+  padding: 8px;
+  border-radius: 8px;
+  color: white;
+  background-color: rgba(0,0,0,0.6);
+  display: inline-block;
+}
+
+@keyframes aparecerMensagem {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

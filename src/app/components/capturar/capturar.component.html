@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <title>Capturar</title>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a routerLink="/capturar" class="logo">
+        <img src="assets/pokebolaRoxa.png" alt="Logo" class="pokebola" />
+        Capturar
+      </a>
+      <button (click)="toggleMusic()" class="music-button">
+        <i [class]="isPlaying ? 'fas fa-pause-circle' : 'fas fa-play-circle'"></i>
+      </button>
+
+      <div class="mobile-menu" (click)="toggleMenu()" [class.active]="menuActive">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+
+      <ul class="nav-list" [class.active]="menuActive">
+        <li *ngFor="let link of links; let i = index" [style.animation]="getLinkAnimation(i)">
+          <a [routerLink]="link.path" routerLinkActive="active-link">{{ link.name }}</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="pokemon-center-container" *ngIf="pokemonAtual">
+      <div class="pokemon-card-center">
+        <!-- Imagem do Pokémon -->
+        <img [src]="pokemonAtual?.imagem" *ngIf="pokemonAtual" alt="Imagem do Pokémon" />
+        <h3>{{ pokemonAtual.nome }}</h3>
+
+        <!-- Tipos do Pokémon com cor -->
+        <div class="tipos-container">
+          <span 
+            *ngFor="let tipo of pokemonAtual.tipos" 
+            class="tipo" 
+            [ngClass]="tipo">
+            {{ tipo | titlecase }}
+          </span>
+        </div>
+
+        <p>Poder: ???</p>
+        <p>Chance de Captura: {{ pokemonAtual.chanceCaptura }}%</p>
+
+        <button 
+          *ngIf="!pokebolaGirando && !pokebolaExplodindo && pokemonAtual" 
+          (click)="capturarPokemon(pokemonAtual.id)" 
+          class="btn-capturar">
+          Capturar
+        </button>
+
+        <img 
+          *ngIf="pokebolaGirando" 
+          src="assets/pokeballStatic.png" 
+          alt="Pokébola sacudindo" 
+          class="pokebola-animacao sacudindo" />
+
+        <div class="sparks" *ngIf="pokebolaExplodindo">
+          <div class="spark" *ngFor="let s of [1,2,3,4,5,6]"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sem-pokemon" *ngIf="!pokemonAtual">
+      <p>Nenhum Pokémon disponível para captura agora.</p>
+    </div>
+
+    <div class="alerta" *ngIf="mensagemCaptura">
+      {{ mensagemCaptura }}
+    </div>
+  </main>
+
+  <script src="components/menu/capturar.js"></script>
+</body>
+</html>

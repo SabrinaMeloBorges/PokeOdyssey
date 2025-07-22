@@ -1,0 +1,39 @@
+<header>
+    <nav>
+      <a routerLink="/menu" class="logo">
+        <img src="assets/pokebolaAzul.png" alt="Logo" class="pokebola">
+        Menu
+      </a>
+  
+      <app-user-info 
+        [userName]="userName" 
+        [lastLogin]="lastLogin" 
+        [currentTime]="currentTime">
+      </app-user-info>
+  
+      <div class="mobile-menu" (click)="toggleMenu()" [class.active]="menuActive">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+  
+      <ul class="nav-list" [class.active]="menuActive">
+        <li *ngFor="let link of visibleLinks; let i = index"
+            [style.animation]="getLinkAnimation(i)">
+          <a [routerLink]="link.path"
+             [class.active]="link.path === activeLink">
+            {{ link.name }}
+          </a>
+        </li>
+  
+        <li>
+
+        </li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+  

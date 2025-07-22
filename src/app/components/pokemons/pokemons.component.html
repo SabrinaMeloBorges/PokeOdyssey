@@ -1,0 +1,160 @@
+<nav>
+  <a routerLink="/pokemons" class="logo">
+    <img src="assets/pokebolaVerde.png" alt="Logo" class="pokebola">
+    Pokémons
+  </a>
+  <div class="mobile-menu" [class.active]="menuActive" (click)="toggleMenu()">
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+  </div>
+  <ul class="nav-list" [class.active]="menuActive">
+    <li *ngFor="let link of visibleLinks; let i = index"
+        [style.animation]="getLinkAnimation(i)">
+      <a [routerLink]="link.path"
+         [class.active]="link.path === activeLink">
+        {{ link.name }}
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<main class="container">
+  <h1>{{ isAdmin ? 'Pokémons Cadastrados' : 'Meus Pokémons' }}</h1>
+
+  <div *ngIf="pokemonsFiltrados.length && getProximoCooldown(pokemonsFiltrados[0]) > 0 && !isAdmin" class="proximo-pronto">
+    Próximo Pokémon pronto em {{ (getProximoCooldown(pokemonsFiltrados[0]) / 1000) | number:'1.0-0' }}s
+  </div>
+
+  <div class="filtro-container">
+    <label for="filtro" class="filtro-label">Filtrar por:</label>
+    <select id="filtro" [(ngModel)]="filtroSelecionado" (change)="onFiltroChange(filtroSelecionado)" class="filtro-select">
+      <option value="recentes">Mais Recente</option>
+      <option value="fortes">Mais Forte</option>
+      <option value="nome">Ordem Alfabética</option>
+    </select>
+  </div>
+
+  <div class="pokemon-grid">
+    <div class="pokemon-card" *ngFor="let pokemon of pokemonsFiltrados">
+      <img [src]="pokemon.imagem" [alt]="pokemon.nome" class="pokemon-img" />
+      <h3>{{ pokemon.nome }}</h3>
+
+      <div class="types-container" *ngIf="pokemon.tipo && pokemon.tipo.length">
+        <span *ngFor="let type of pokemon.tipo"
+              class="type-badge"
+              [class]="'type-' + type">
+          {{ type | titlecase }}
+        </span>
+      </div>
+
+      <!-- Info exibida apenas para ADMIN -->
+      <ng-container *ngIf="isAdmin">
+        <p><strong>Chance de Captura:</strong> {{ pokemon.chanceCaptura }}%</p>
+        <p><strong>Cadastrado em:</strong> {{ formatarData(pokemon.createdAt) | date:'dd/MM/yyyy HH:mm' }}</p>
+        <button class="btn-editar" (click)="editarPokemon(pokemon)">Editar Pokémon</button>
+      </ng-container>
+
+      <!-- Info exibida apenas para CAÇADOR -->
+      <ng-container *ngIf="!isAdmin">
+        <p><strong>Poder:</strong> {{ pokemon.poder }}</p>
+
+        <p><strong>Data de captura:</strong>
+          {{ formatarData(pokemon.dataCaptura || pokemon.createdAt) | date:'dd/MM/yyyy HH:mm' }}
+        </p>
+
+        <div class="fortalecer-section">
+          <button
+            *ngIf="!pokemon.showReadyIcon"
+            [disabled]="pokemon.cooldownRemaining > 0"
+            [ngStyle]="{
+              backgroundColor: pokemon.cooldownRemaining > 0 ? '#ccc' : '#4CAF50',
+              color: pokemon.cooldownRemaining > 0 ? '#666' : '#fff'
+            }"
+            (click)="fortalecerPokemon(pokemon)"
+          >
+            {{ pokemon.cooldownRemaining > 0 
+                ? ((pokemon.cooldownRemaining / 1000) | number:'1.0-0') + 's' 
+                : 'Fortalecer' }}
+          </button>
+
+          <div *ngIf="pokemon.showReadyIcon" class="ready-icon">
+            <img src="assets/pokebolaVerde.png" alt="Ready" class="ready-img" />
+          </div>
+        </div>
+
+        <div *ngIf="pokemon.cooldownRemaining > 0" class="cooldown-bar-container">
+          <div class="cooldown-bar"
+               [style.width.%]="getCooldownPercent(pokemon)"
+               [style.backgroundColor]="getCooldownColor(pokemon)">
+          </div>
+          <span class="cooldown-text">
+            Pronto em {{ (pokemon.cooldownRemaining / 1000) | number:'1.0-0' }}s
+          </span>
+        </div>
+
+        <button (click)="soltarPokemon(pokemon)" class="btn-soltar">Soltar</button>
+      </ng-container>
+    </div>
+  </div>
+</main>
+
+<style>
+.cooldown-bar-container {
+  margin-top: 6px;
+  position: relative;
+}
+
+.cooldown-bar {
+  height: 8px;
+  border-radius: 4px;
+  transition: width 1s linear;
+}
+
+.cooldown-text {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.ready-icon {
+  font-size: 1.2rem;
+  color: green;
+  animation: pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.fortalecer-section {
+  margin-bottom: 10px;
+}
+
+.btn-editar {
+  background-color: #ffcc00;
+  color: #000;
+  border: none;
+  padding: 6px 12px;
+  margin-top: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.btn-soltar {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.3s ease;
+}
+.btn-soltar:hover {
+  background-color: #c62828;
+}
+</style>

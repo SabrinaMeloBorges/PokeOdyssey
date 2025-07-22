@@ -1,0 +1,87 @@
+<div class="full-page-container">
+  <header>
+    <nav>
+      <a routerLink="/cadastro" class="logo">
+        <img src="assets/pokebolaAzul.png" alt="Logo" class="pokebola">
+        Cadastrar Pokémon
+      </a>
+
+      <div class="mobile-menu" (click)="toggleMenu()" [class.active]="menuActive">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+
+      <ul class="nav-list" [class.active]="menuActive">
+        <li *ngFor="let link of links; let i = index" [style.animation]="getLinkAnimation(i)">
+          <a [routerLink]="link.path" routerLinkActive="active">{{ link.name }}</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2 class="form-title">Cadastrar Novo Pokémon</h2>
+
+      <form [formGroup]="pokemonForm" (ngSubmit)="onSubmit()" class="pokemon-form">
+        <div class="form-group">
+          <label for="pokemonName">Nome do Pokémon</label>
+          <input id="pokemonName" type="text" formControlName="name" placeholder="Ex: Pikachu">
+          <div *ngIf="pokemonForm.get('name').invalid && (pokemonForm.get('name').dirty || pokemonForm.get('name').touched)" class="error-message">
+            <div *ngIf="pokemonForm.get('name').errors.required">Nome é obrigatório</div>
+            <div *ngIf="pokemonForm.get('name').errors.minlength">Mínimo 3 caracteres</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="pokemonTypes">Tipo</label>
+          <div class="types-container">
+            <button
+              *ngFor="let tipo of tiposDisponiveis"
+              [class.selected]="selectedTypes.includes(tipo)"
+              (click)="toggleTypeSelection(tipo)"
+              class="type-btn">
+              {{ tipo }}
+            </button>
+          </div>
+          <div *ngIf="pokemonForm.get('types').invalid && pokemonForm.get('types').touched" class="error-message">
+            <div *ngIf="pokemonForm.get('types').errors?.required">Pelo menos um tipo é obrigatório</div>
+          </div>
+        </div>
+
+        <!-- Novo campo de Porcentagem de Captura -->
+        <div class="form-group">
+          <label for="captureRate">Porcentagem de Captura</label>
+          <input id="captureRate" type="number" formControlName="captureRate" min="1" max="100" placeholder="Ex: 50">
+          <div *ngIf="pokemonForm.get('captureRate').invalid && (pokemonForm.get('captureRate').dirty || pokemonForm.get('captureRate').touched)" class="error-message">
+            <div *ngIf="pokemonForm.get('captureRate').errors.required">Porcentagem de captura é obrigatória</div>
+            <div *ngIf="pokemonForm.get('captureRate').errors.min">Porcentagem deve ser no mínimo 1</div>
+            <div *ngIf="pokemonForm.get('captureRate').errors.max">Porcentagem não pode ser maior que 100</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="imageUrl">URL da Imagem</label>
+          <input id="imageUrl" type="text" formControlName="imageUrl" placeholder="https://exemplo.com/imagem.png">
+          <div *ngIf="pokemonForm.get('imageUrl').invalid && (pokemonForm.get('imageUrl').dirty || pokemonForm.get('imageUrl').touched)" class="error-message">
+            <div *ngIf="pokemonForm.get('imageUrl').errors.required">URL é obrigatória</div>
+            <div *ngIf="pokemonForm.get('imageUrl').errors.pattern">URL inválida</div>
+          </div>
+        </div>
+
+        <div *ngIf="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="pokemonForm.invalid || submitted">
+          {{ submitted ? 'Cadastrando...' : 'Cadastrar Pokémon' }}
+        </button>
+      </form>
+    </div>
+  </main>
+</div>

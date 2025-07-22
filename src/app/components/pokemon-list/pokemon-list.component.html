@@ -1,0 +1,14 @@
+<div class="pokemon-grid">
+  <div *ngFor="let pokemon of pokemonList" class="pokemon-card">
+    <img [src]="pokemon.image" [alt]="pokemon.name">
+    <h3>{{ pokemon.name }}</h3>
+    <div class="types">
+      <span *ngFor="let type of pokemon.types" [class]="'type-' + type">
+        {{ type }}
+      </span>
+    </div>
+  </div>
+  <div *ngIf="loading" class="loading-spinner">
+    Carregando mais Pokémon...
+  </div>
+</div>

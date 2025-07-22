@@ -1,0 +1,98 @@
+<header>
+  <nav>
+    <a routerLink="/usuarios" class="logo">
+      <img src="assets/pokebolaLaranja.png" alt="Logo" class="pokebola">
+      usuários
+    </a>
+
+    <div class="mobile-menu" (click)="toggleMenu()" [class.active]="menuActive">
+      <div class="line1"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
+    </div>
+
+    <ul class="nav-list" [class.active]="menuActive">
+      <li *ngFor="let link of links; let i = index"
+          [style.animation]="getLinkAnimation(i)">
+        <a [routerLink]="link.path" routerLinkActive="active-link">{{ link.name }}</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="trainer-container">
+
+      <div class="trainer-header">
+          <h1><i class="fas fa-users"></i> Lista de Usuários</h1>
+      </div>
+
+      <div *ngIf="loading" class="loading-state">
+          <div class="pokeball-spinner"></div>
+          <p>Carregando treinadores...</p>
+      </div>
+
+      <div *ngIf="error" class="error-state">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>{{ error }}</p>
+          <button (click)="loadUsers()" class="retry-btn">Tentar Novamente</button>
+      </div>
+
+      <div *ngIf="!loading && !error" class="trainer-grid">
+          <div *ngFor="let user of users" class="trainer-card">
+              <div class="trainer-avatar">
+                  <i class="fas fa-user" [class.admin]="user.role === 'admin'"></i>
+              </div>
+
+              <div class="trainer-info">
+                  <h3>{{ user.displayName }}</h3>
+
+              </div>
+
+              <div class="trainer-actions">
+                  <select *ngIf="isAdmin"
+                          [(ngModel)]="user.role"
+                          (change)="onRoleChange(user, $event)"
+                          class="role-select">
+                      <option value="hunter">hunter</option>
+                      <option value="admin">admin</option>
+                  </select>
+
+                  <button *ngIf="user.role !== 'admin'" 
+                          (click)="viewPokemons(user)" 
+                          class="view-pokemons-btn">
+                      <i class="fas fa-eye"></i> Ver Time
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <div *ngIf="showPokemonModal && selectedUser" class="pokemon-modal-overlay">
+          <div class="pokemon-modal">
+              <div class="modal-header">
+                  <h2>Time de {{ selectedUser?.displayName }}</h2>
+                  <button (click)="closeModal()" class="close-modal-btn" aria-label="Fechar modal">×</button>
+              </div>
+
+              <div *ngIf="selectedUser.capturedPokemons?.length; else noPokemons" class="pokemon-grid">
+                  <div *ngFor="let pokemon of selectedUser.capturedPokemons" class="pokemon-card">
+                      <img [src]="pokemon.imagem" [alt]="pokemon.nome" class="pokemon-sprite">
+                      <div class="pokemon-details">
+                          <h3>{{ pokemon.nome | titlecase }}</h3>
+                          <p class="capture-date">
+                              Capturado em: {{ pokemon.dataCaptura | date:'dd/MM/yyyy' }}
+                          </p>
+                      </div>
+                  </div>
+              </div>
+
+              <ng-template #noPokemons>
+                  <div class="empty-team">
+                      <i class="fas fa-search"></i>
+                      <p>Este treinador ainda não capturou Pokémons</p>
+                  </div>
+              </ng-template>
+          </div>
+      </div>
+  </div>
+</main>

@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "default": "pokellentt",
+    "PokeOdyssey": "pokellentt"
+  },
+  "targets": {
+    "newangularpro-a15d8": {
+      "hosting": {
+        "PokeOdyssey": [
+          "newangularpro-a15d8"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

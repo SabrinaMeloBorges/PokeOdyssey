@@ -1,0 +1,77 @@
+.user-info-container {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 50; /* Reduzido para ficar abaixo do menu */
+    transition: all 0.3s ease;
+  }
+  
+  .menu-open .user-info-container {
+    opacity: 0.5;
+    transform: translateY(20px);
+  }
+
+  .user-time-wrapper {
+    margin-bottom: 500px;
+/*     margin-right: 100px; */
+    background: rgba(255, 255, 255, 0.566);
+    padding: 12px 24px;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .user-name {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .time-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .clock-icon {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .current-time {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .user-info-container {
+      bottom: 10px;
+    }
+    
+    .user-time-wrapper {
+      padding: 8px 16px;
+      border-radius: 20px;
+    }
+    
+    .user-name {
+      font-size: 0.9rem;
+    }
+    
+    .current-time {
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .user-time-wrapper {
+      width: 90%;
+      max-width: 300px;
+    }
+  }
